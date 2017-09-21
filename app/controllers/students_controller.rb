@@ -5,11 +5,13 @@ class StudentsController < ApplicationController
   # GET /students.json
   def index
     @students = Student.all
+    render json:@students
   end
 
   # GET /students/1
   # GET /students/1.json
   def show
+    render json:@student
   end
 
   # GET /students/new
@@ -25,29 +27,22 @@ class StudentsController < ApplicationController
   # POST /students.json
   def create
     @student = Student.new(student_params)
-
-    respond_to do |format|
       if @student.save
-        format.html { redirect_to @student, notice: 'Student was successfully created.' }
-        format.json { render :show, status: :created, location: @student }
-      else
-        format.html { render :new }
-        format.json { render json: @student.errors, status: :unprocessable_entity }
-      end
+        render json: @student, status: :created, location: @student
+    else
+      render json: @student.errors, status: :unprocessable_entity
+    
     end
   end
 
   # PATCH/PUT /students/1
   # PATCH/PUT /students/1.json
   def update
-    respond_to do |format|
       if @student.update(student_params)
-        format.html { redirect_to @student, notice: 'Student was successfully updated.' }
-        format.json { render :show, status: :ok, location: @student }
-      else
-        format.html { render :edit }
-        format.json { render json: @student.errors, status: :unprocessable_entity }
-      end
+         render json: @student
+    else
+      render json: @student.errors, status: :unprocessable_entity
+     
     end
   end
 
@@ -55,10 +50,7 @@ class StudentsController < ApplicationController
   # DELETE /students/1.json
   def destroy
     @student.destroy
-    respond_to do |format|
-      format.html { redirect_to students_url, notice: 'Student was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    render json:@student
   end
 
   private

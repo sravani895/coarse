@@ -5,11 +5,13 @@ class InstructorsController < ApplicationController
   # GET /instructors.json
   def index
     @instructors = Instructor.all
+     render json:@instructors
   end
 
   # GET /instructors/1
   # GET /instructors/1.json
   def show
+    render json:@instructor
   end
 
   # GET /instructors/new
@@ -25,29 +27,21 @@ class InstructorsController < ApplicationController
   # POST /instructors.json
   def create
     @instructor = Instructor.new(instructor_params)
-
-    respond_to do |format|
       if @instructor.save
-        format.html { redirect_to @instructor, notice: 'Instructor was successfully created.' }
-        format.json { render :show, status: :created, location: @instructor }
-      else
-        format.html { render :new }
-        format.json { render json: @instructor.errors, status: :unprocessable_entity }
-      end
+        render json: @instructor, status: :created, location: @instructor
+    else
+      render json: @instructor.errors, status: :unprocessable_entity
+    
     end
   end
 
   # PATCH/PUT /instructors/1
   # PATCH/PUT /instructors/1.json
   def update
-    respond_to do |format|
       if @instructor.update(instructor_params)
-        format.html { redirect_to @instructor, notice: 'Instructor was successfully updated.' }
-        format.json { render :show, status: :ok, location: @instructor }
-      else
-        format.html { render :edit }
-        format.json { render json: @instructor.errors, status: :unprocessable_entity }
-      end
+         render json: @instructor
+    else
+      render json: @instructor.errors, status: :unprocessable_entity
     end
   end
 
@@ -55,11 +49,9 @@ class InstructorsController < ApplicationController
   # DELETE /instructors/1.json
   def destroy
     @instructor.destroy
-    respond_to do |format|
-      format.html { redirect_to instructors_url, notice: 'Instructor was successfully destroyed.' }
-      format.json { head :no_content }
+    render json: @instructor
     end
-  end
+  
 
   private
     # Use callbacks to share common setup or constraints between actions.
